@@ -71,9 +71,11 @@ function App() {
     );
   });
 
+  console.log("asd");
+
   return (
     <div className="App">
-      <h1>Dockerized Fullstack React Application</h1>
+      <h1>Fullstack React Application</h1>
       <div className="form">
         <input
           name="setBookName"
