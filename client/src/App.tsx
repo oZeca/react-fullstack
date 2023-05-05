@@ -11,25 +11,34 @@ function App() {
 
   useEffect(() => {
     axios.get("/api/get").then((response) => {
-      setFetchData(response.data);
+      setFetchData(response.data || []);
     });
   }, []);
 
   const submit = () => {
-    axios.post("/api/insert", { setBookName, setReview }).then(() => {
-      alert("success post");
+    axios.post("/api/insert", { setBookName, setReview }).then((response) => {
+      axios.get("/api/get").then((response) => {
+        setFetchData(response.data || []);
+      });
     });
-    console.log({ setBookName, setReview });
   };
 
   const deleteB = (id: string) => {
     if (window.confirm("Do you want to delete? ")) {
-      axios.delete(`/api/delete/${id}`);
+      axios.delete(`/api/delete/${id}`).then((response) => {
+        axios.get("/api/get").then((response) => {
+          setFetchData(response.data || []);
+        });
+      });
     }
   };
 
   const edit = (id: string) => {
-    axios.put(`/api/update/${id}`, { reviewUpdate });
+    axios.put(`/api/update/${id}`, { reviewUpdate }).then((response) => {
+      axios.get("/api/get").then((response) => {
+        setFetchData(response.data || []);
+      });
+    });
   };
 
   const card = fetchData.map((val, key) => {
@@ -37,28 +46,27 @@ function App() {
       <>
         <div style={{ width: "18rem" }} className="m-2">
           <div>
-            <div>{val.book_name}</div>
-            <div>{val.book_review}</div>
+            <h5>{val.book_name}</h5>
+            <p>{val.book_review}</p>
             <input
               name="reviewUpdate"
               onChange={(e) => setReviewUpdate(e.target.value)}
               placeholder="Update Review"
             ></input>
-            <div
-              className="m-2"
+            <button
               onClick={() => {
                 edit(val.id);
               }}
             >
               Update
-            </div>
-            <div
+            </button>
+            <button
               onClick={() => {
                 deleteB(val.id);
               }}
             >
               Delete
-            </div>
+            </button>
           </div>
         </div>
       </>
@@ -82,7 +90,7 @@ function App() {
       </div>
       <button onClick={submit}>Submit</button> <br />
       <br />
-      <div>
+      <div style={{ display: "flex" }}>
         <div>{card}</div>
       </div>
       <header className="App-header">
