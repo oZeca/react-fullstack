@@ -1,1 +1,5 @@
-Created with https://jsramblings.com/dockerizing-a-react-app/
+Created with 
+
+- https://jsramblings.com/dockerizing-a-react-app/
+- https://khalilstemmler.com/blogs/typescript/node-starter-project/
+- https://www.section.io/engineering-education/build-and-dockerize-a-full-stack-react-app-with-nodejs-and-nginx/
