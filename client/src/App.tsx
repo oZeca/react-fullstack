@@ -43,33 +43,31 @@ function App() {
 
   const card = fetchData.map((val, key) => {
     return (
-      <>
-        <div style={{ width: "18rem" }} className="m-2">
-          <div>
-            <h5>{val.book_name}</h5>
-            <p>{val.book_review}</p>
-            <input
-              name="reviewUpdate"
-              onChange={(e) => setReviewUpdate(e.target.value)}
-              placeholder="Update Review"
-            ></input>
-            <button
-              onClick={() => {
-                edit(val.id);
-              }}
-            >
-              Update
-            </button>
-            <button
-              onClick={() => {
-                deleteB(val.id);
-              }}
-            >
-              Delete
-            </button>
-          </div>
+      <div style={{ width: "18rem" }} className="m-2" key={key}>
+        <div>
+          <h5>{val.book_name}</h5>
+          <p>{val.book_review}</p>
+          <input
+            name="reviewUpdate"
+            onChange={(e) => setReviewUpdate(e.target.value)}
+            placeholder="Update Review"
+          ></input>
+          <button
+            onClick={() => {
+              edit(val.id);
+            }}
+          >
+            Update
+          </button>
+          <button
+            onClick={() => {
+              deleteB(val.id);
+            }}
+          >
+            Delete
+          </button>
         </div>
-      </>
+      </div>
     );
   });
 
