@@ -55,10 +55,18 @@ services:
       - /app/node_modules
       - ./client:/app
 
-  test:
+  testclient:
     build:
       dockerfile: Dockerfile
       context: ./client
+    environment:
+      - CI=true
+    command: npm test
+
+  testserver:
+    build:
+      dockerfile: Dockerfile
+      context: ./server
     environment:
       - CI=true
     command: npm test

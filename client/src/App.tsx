@@ -71,8 +71,6 @@ function App() {
     );
   });
 
-  console.log("asd");
-
   return (
     <div className="App">
       <h1>Fullstack React Application</h1>
