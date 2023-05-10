@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { BookType } from "../components/book/bookType";
 
 // Define a service using a base URL and expected endpoints
 export const bookApi = createApi({
@@ -8,7 +9,7 @@ export const bookApi = createApi({
   endpoints: (builder) => ({
     // list
     getBooks: builder.query<
-      [{ book_name: string; book_review: string; id: number }],
+      [BookType],
       string
     >({
       query: () => `/get`,
