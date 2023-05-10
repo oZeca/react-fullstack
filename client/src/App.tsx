@@ -1,46 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
-import axios from "axios";
+import {
+  useDeleteBookMutation,
+  useEditBookMutation,
+  useGetBooksQuery,
+  useInsertBookMutation,
+} from "./store/boobkApi";
 
 function App() {
   const [setBookName, setSetBookName] = useState<string>("");
   const [setReview, setSetReview] = useState<string>("");
-  const [fetchData, setFetchData] = useState<Array<any>>([]);
   const [reviewUpdate, setReviewUpdate] = useState<string>("");
 
-  useEffect(() => {
-    axios.get("/api/get").then((response) => {
-      setFetchData(response.data || []);
-    });
-  }, []);
+  const getBooks = useGetBooksQuery("");
+  const [insertBook, insertBookState] = useInsertBookMutation();
+  const [editBook, editBookState] = useEditBookMutation();
+  const [deleteBook, deleteBookState] = useDeleteBookMutation();
 
-  const submit = () => {
-    axios.post("/api/insert", { setBookName, setReview }).then((response) => {
-      axios.get("/api/get").then((response) => {
-        setFetchData(response.data || []);
-      });
-    });
+  const submit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    insertBook({ setBookName, setReview });
   };
 
-  const deleteB = (id: string) => {
+  const deleteB = (id: number) => {
     if (window.confirm("Do you want to delete? ")) {
-      axios.delete(`/api/delete/${id}`).then((response) => {
-        axios.get("/api/get").then((response) => {
-          setFetchData(response.data || []);
-        });
-      });
+      deleteBook(id.toString());
     }
   };
 
-  const edit = (id: string) => {
-    axios.put(`/api/update/${id}`, { reviewUpdate }).then((response) => {
-      axios.get("/api/get").then((response) => {
-        setFetchData(response.data || []);
-      });
-    });
+  const edit = (id: number) => {
+    editBook({ id: id.toString(), reviewUpdate });
   };
 
-  const card = fetchData.map((val, key) => {
+  const card = getBooks.data?.map((val, key) => {
     return (
       <div
         className="flex flex-row flex-wrap bg-slate-200 p-4 rounded-md"
@@ -52,17 +44,12 @@ function App() {
         </div>
         <input
           name="reviewUpdate"
-          onChange={(e) => setSetBookName(e.target.value)}
-          placeholder="Update Book name"
-          className="block w-full rounded-md border-0 py-1.5 p-2 mb-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-        />
-        <input
-          name="reviewUpdate"
           onChange={(e) => setReviewUpdate(e.target.value)}
           placeholder="Update Review"
           className="block w-full rounded-md border-0 py-1.5 p-2 mb-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
         />
         <button
+          disabled={editBookState.isLoading}
           className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 mb-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           onClick={() => {
             edit(val.id);
@@ -71,6 +58,7 @@ function App() {
           Update
         </button>
         <button
+          disabled={deleteBookState.isLoading}
           className="flex w-full justify-center rounded-md bg-red-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
           onClick={() => {
             deleteB(val.id);
@@ -81,8 +69,6 @@ function App() {
       </div>
     );
   });
-
-  console.log(card);
 
   return (
     <div className="App flex min-h-full flex-col px-6 py-12 lg:px-8">
@@ -103,6 +89,7 @@ function App() {
           className="block w-full rounded-md border-0 py-1.5 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
         />
         <button
+          disabled={insertBookState.isLoading}
           type="submit"
           onClick={submit}
           className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -111,7 +98,7 @@ function App() {
         </button>{" "}
       </form>
       <div className="my-20 border-b-2 border-indigo-500" />
-      {card.length > 0 ? (
+      {card && card.length > 0 ? (
         <div className="grid grid-cols-3 grid-rows-3 gap-10 w-full">{card}</div>
       ) : (
         "Your books will appear here after you create one."

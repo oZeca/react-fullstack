@@ -3,8 +3,9 @@ Client - React
 BD - Sql 
 Packaging: Docker
 
+---
 
-Ressources 
-- https://jsramblings.com/dockerizing-a-react-app/
-- https://khalilstemmler.com/blogs/typescript/node-starter-project/
-- https://www.section.io/engineering-education/build-and-dockerize-a-full-stack-react-app-with-nodejs-and-nginx/
+#### To run the app in development mode run
+run `docker-compose up --build`
+Open client in: `http://localhost:3050/`
+Open Backend in: `http://localhost:8000/`
