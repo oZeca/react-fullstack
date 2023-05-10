@@ -1,7 +1,7 @@
-Server - Nodejs
-Client - React
-BD - Sql 
-Packaging: Docker
+- Server - Nodejs
+- Client - React
+- BD - Sql 
+- Packaging: Docker
 
 ---
 
