@@ -5,7 +5,7 @@
 
 ---
 
-#### To run the app in development mode run
+#### To run the app in development mode
 
 run `docker-compose up --build`
 
