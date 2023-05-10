@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import request from "supertest";
-import app from "../src";
+import app from "..";
 
 describe("POST Create book", () => {
   it("should create book for the user", (done) => {
