@@ -18,8 +18,8 @@ function App() {
     insertBook({ setBookName, setReview });
   };
 
-  const card = getBooks.data?.map((book, key) => {
-    return <Book book={book} key={key} />
+  const bookList = getBooks.data?.map((book, key) => {
+    return <Book book={book} key={key} />;
   });
 
   return (
@@ -50,8 +50,10 @@ function App() {
         </button>{" "}
       </form>
       <div className="my-20 border-b-2 border-indigo-500" />
-      {card && card.length > 0 ? (
-        <div className="grid grid-cols-3 grid-rows-3 gap-10 w-full">{card}</div>
+      {bookList && bookList.length > 0 ? (
+        <div className="grid grid-cols-3 grid-rows-3 gap-10 w-full">
+          {bookList}
+        </div>
       ) : (
         "Your books will appear here after you create one."
       )}

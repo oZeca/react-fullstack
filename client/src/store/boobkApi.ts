@@ -1,6 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BookType } from "../components/book/bookType";
 
+type InsertBook = { setBookName: string; setReview: string };
+type EditBook = { id: string; reviewUpdate: string };
+
 // Define a service using a base URL and expected endpoints
 export const bookApi = createApi({
   reducerPath: "bookApi",
@@ -8,18 +11,12 @@ export const bookApi = createApi({
   tagTypes: ["Books"],
   endpoints: (builder) => ({
     // list
-    getBooks: builder.query<
-      [BookType],
-      string
-    >({
+    getBooks: builder.query<[BookType], string>({
       query: () => `/get`,
       providesTags: ["Books"],
     }),
     // insert
-    insertBook: builder.mutation<
-      any,
-      { setBookName: string; setReview: string }
-    >({
+    insertBook: builder.mutation<any, InsertBook>({
       query: (body) => ({
         url: `insert/`,
         method: "POST",
@@ -28,7 +25,7 @@ export const bookApi = createApi({
       invalidatesTags: ["Books"],
     }),
     // edit
-    editBook: builder.mutation<any, { id: string; reviewUpdate: string }>({
+    editBook: builder.mutation<any, EditBook>({
       query: (body) => ({
         url: `update/${body.id}`,
         method: "PUT",
